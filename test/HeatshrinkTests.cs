@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.IO;
 using HeatshrinkCSharp;
 
 namespace HeatshrinkTests
@@ -29,6 +30,10 @@ namespace HeatshrinkTests
             // Test 5: Different window and lookahead sizes
             Console.WriteLine("\nTest 5: Different window and lookahead sizes");
             TestDifferentWindowSizes();
+            
+            // Test 6: Compare with C version compression
+            Console.WriteLine("\nTest 6: Compare with C version compression");
+            TestCompareWithCVersion();
             
             Console.WriteLine("\nAll tests completed!");
             Console.ReadKey();
@@ -150,6 +155,49 @@ namespace HeatshrinkTests
                 bool success = testString == decompressedString;
                 Console.WriteLine($"Test result: {(success ? "PASS" : "FAIL")}");
             }
+        }
+        
+        static void TestCompareWithCVersion()
+        {
+            string testFileName = "alice29.txt";
+            string cCompressedFileName = "alice29.txt.hs";
+            
+            Console.WriteLine($"Testing with {testFileName}...");
+            
+            // Read original data
+            byte[] originalData = File.ReadAllBytes(testFileName);
+            Console.WriteLine($"Original file size: {originalData.Length} bytes");
+            
+            // Read C version compressed data
+            byte[] cCompressedData = File.ReadAllBytes(cCompressedFileName);
+            Console.WriteLine($"C version compressed size: {cCompressedData.Length} bytes");
+            double cCompressionRatio = (double)cCompressedData.Length / originalData.Length;
+            Console.WriteLine($"C version compression ratio: {cCompressionRatio:F4}");
+            
+            // Compress with C# version using same parameters (window_sz2=10, lookahead_sz2=4)
+            byte[] csCompressedData = HeatshrinkEncoder.Compress(10, 4, originalData);
+            Console.WriteLine($"C# version compressed size: {csCompressedData.Length} bytes");
+            double csCompressionRatio = (double)csCompressedData.Length / originalData.Length;
+            Console.WriteLine($"C# version compression ratio: {csCompressionRatio:F4}");
+            
+            // Compare compressed data
+            bool compressionMatch = csCompressedData.SequenceEqual(cCompressedData);
+            Console.WriteLine($"Compression match: {(compressionMatch ? "PASS" : "FAIL")}");
+            
+            if (!compressionMatch)
+            {
+                Console.WriteLine("Compression output differs between C and C# versions.");
+            }
+            
+            // Test decompression of C version compressed data
+            byte[] decompressedFromC = HeatshrinkDecoder.Decompress(10, 4, cCompressedData);
+            bool decompressionFromCMatch = decompressedFromC.SequenceEqual(originalData);
+            Console.WriteLine($"Decompression from C version: {(decompressionFromCMatch ? "PASS" : "FAIL")}");
+            
+            // Test decompression of C# version compressed data
+            byte[] decompressedFromCS = HeatshrinkDecoder.Decompress(10, 4, csCompressedData);
+            bool decompressionFromCSMatch = decompressedFromCS.SequenceEqual(originalData);
+            Console.WriteLine($"Decompression from C# version: {(decompressionFromCSMatch ? "PASS" : "FAIL")}");
         }
     }
 }

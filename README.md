@@ -60,6 +60,7 @@ Heatshrink is designed to be a lightweight compression algorithm, optimized for 
 | Simple string | 60 bytes | ~35 bytes | ~0.58 |
 | Repeated data | 1000 bytes | ~20 bytes | ~0.02 |
 | Large text | 10000 bytes | ~4000 bytes | ~0.40 |
+| Alice in Wonderland (alice29.txt) | 152089 bytes | 85832 bytes | 0.5644 |
 
 ## License
 
