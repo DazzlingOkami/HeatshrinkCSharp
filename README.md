@@ -48,6 +48,7 @@ The test suite includes the following tests:
 3. **Repeated data** - Tests compression of highly repetitive data
 4. **Large data** - Tests compression and decompression of large data
 5. **Different window and lookahead sizes** - Tests with various window and lookahead configurations
+6. **C version interoperability** - Tests that C# version can compress data that matches C version output and decompress data compressed by C version
 
 ## Performance
 
