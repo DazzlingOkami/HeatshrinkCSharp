@@ -1,0 +1,35 @@
+# Build output
+bin/
+obj/
+
+# IDE files
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Test output
+TestResults/
+
+# Log files
+*.log
+
+# NuGet packages
+packages/
+
+# Environment variables
+.env
+
+# Temporary files
+*.tmp
+*.temp
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.xml
