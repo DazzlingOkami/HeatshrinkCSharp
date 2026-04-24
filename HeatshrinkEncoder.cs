@@ -41,12 +41,25 @@ namespace HeatshrinkCSharp
         public byte[] Buf { get; set; }
         public int BufSize { get; set; }
         public int OutputSize { get; set; }
+        
+        public OutputInfo(byte[] buf, int bufSize)
+        {
+            Buf = buf;
+            BufSize = bufSize;
+            OutputSize = 0;
+        }
     }
 
     internal class HsIndex
     {
         public ushort Size { get; set; }
         public short[] Index { get; set; }
+        
+        public HsIndex(ushort size, short[] index)
+        {
+            Size = size;
+            Index = index;
+        }
     }
 
     public class HeatshrinkEncoder
@@ -87,11 +100,7 @@ namespace HeatshrinkCSharp
 
             // Initialize search index
             int index_sz = buf_sz;
-            this.search_index = new HsIndex
-            {
-                Size = (ushort)index_sz,
-                Index = new short[index_sz]
-            };
+            this.search_index = new HsIndex((ushort)index_sz, new short[index_sz]);
         }
 
         public void Reset()
@@ -155,12 +164,7 @@ namespace HeatshrinkCSharp
             }
 
             output_size = 0;
-            OutputInfo oi = new OutputInfo
-            {
-                Buf = out_buf,
-                BufSize = out_buf_size,
-                OutputSize = 0
-            };
+            OutputInfo oi = new OutputInfo(out_buf, out_buf_size);
 
             while (true)
             {

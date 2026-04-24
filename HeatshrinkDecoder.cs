@@ -109,12 +109,7 @@ namespace HeatshrinkCSharp
             }
 
             output_size = 0;
-            OutputInfo oi = new OutputInfo
-            {
-                Buf = out_buf,
-                BufSize = out_buf_size,
-                OutputSize = 0
-            };
+            OutputInfo oi = new OutputInfo(out_buf, out_buf_size);
 
             while (true)
             {
